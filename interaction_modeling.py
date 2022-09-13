@@ -156,7 +156,10 @@ def inference_over_image (img, model, outputfilename):
     cv2.imwrite(outputfilename, pred_arr)
     return pred_arr
 
-#function to convert the classified map to grid maps
+
+
+
+#function to convert a classified map to a grid map
 def classify_2_heatmap (classified_imgpath, class_of_interest, gridsize, eqn, eqn_type, percentc, savemappath):
     
     #assigning variables to some of the the user-fed parameters
