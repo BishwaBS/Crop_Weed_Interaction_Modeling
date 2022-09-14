@@ -55,11 +55,11 @@ def train_model(traindata, test_size, epochs, batch_size):
 
     ### Training the model#####
     model = Sequential()
-    model.add(Dense(16, input_dim=8, activation='relu'))
+    model.add(Dense(16, input_dim=X_train.shape[1], activation='relu'))
     model.add(Dense(12, activation='relu'))
     model.add(Dense(12, activation='relu'))
     model.add(Dense(12, activation='relu'))
-    model.add(Dense(3, activation='softmax'))
+    model.add(Dense(y_train.shape[1], activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
     #Training the model
