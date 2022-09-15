@@ -30,6 +30,16 @@ from keras.wrappers.scikit_learn import KerasClassifier
 
 
 #function to train the model using trainng data in csv file
+#parameters: 
+        #traindata: str- Training csv file that contains X and y variable. The first column should be y variable followed by X variable in other columns
+        #test_size: float- fraction of total data that should be allocated for test data. For example, 0.2
+        #epochs: int- The number of iterations the model should be trained on
+        #batchsize: int- The number of samples to be fed at a time during training process
+#returns:
+        #model: The tensorflow model trained in the process
+        #acc: The accuracy report
+        #scaler: The scaler object used in scaling training data
+
 def train_model(traindata, test_size, epochs, batch_size):
     
     #dataset import
@@ -82,6 +92,14 @@ def train_model(traindata, test_size, epochs, batch_size):
 
 
 ###### function to inference over image using the model trained above
+#parameters:
+            #img: str- The imagepath of image over which the traning model is going to be applied. Can be in any of these formats (.png, .tif., .JPG)
+            #scaler: obj- The scaler object used in scaling training data
+            #model: obj-The tensorflow model trained in the process
+            #outputfilename: str- The path of filename for the classified image to be written after running model over image.
+#returns:
+            #writes classified image at user-defined location
+              
 def inference_over_image (img, scaler, model, outputfilename):
     
     #loading the image
@@ -124,6 +142,16 @@ def inference_over_image (img, scaler, model, outputfilename):
 
 
 ####### function to convert the classified map to grid maps
+#prameters:
+            #classfied_imgpath: str-Path of classified image from which heatmap is to be derived
+            #class of interest: int-Id of the class in the classified image for which heatmap is to be drawn
+            #gridsize: int-Size of the grid in the heatmap in terms of pixel
+            #eqn: str-Equation to convert classified image into heatmap
+            #eqn: str-Equation type. For example, 'simple_linear' or 'simple_polynomial'
+            #percentc: Boolean- True or False depending upon whether percent cover is desired or not
+            #savemappath: str- Path where heatmap is to be saved (just folder)
+ #returns:
+           #saves heatmap in the specified folder
 def classify_2_heatmap (classified_imgpath, class_of_interest, gridsize, eqn, eqn_type, percentc, savemappath):
     
     #assigning variables to some of the the user-fed parameters
@@ -135,15 +163,11 @@ def classify_2_heatmap (classified_imgpath, class_of_interest, gridsize, eqn, eq
     a,b = img.shape[0]%n, img.shape[1]%n
 
     #trimming the image to the dimension exactly divisible by n
-    if a==0:
-        x=img.shape[0]
-    else:
-        x=img.shape[0] - a
+    if a==0: x=img.shape[0]
+    else: x=img.shape[0] - a
 
-    if b==0:
-        y=img.shape[1]
-    else:
-        y=img.shape[1] - b
+    if b==0: y=img.shape[1]
+    else: y=img.shape[1] - b
 
     clip_img=img[0:x, 0:y]
 
@@ -266,4 +290,4 @@ if __name__=="__main__":
     traindata = "trainingsamples.csv"
     model, accuracy_summary, scaler = train_model(traindata, 0.3, 500, 20)
     inference_over_image(img, scaler, model, "test_classified.tif")
-    classify_2_heatmap ("test_classified.tif", 1, 20, False, 'simple_linear', True, os.getcwd())
+    classify_2_heatmap ("test_classified.tif", 1, 20, False, False, True, os.getcwd())
